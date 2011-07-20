@@ -3,6 +3,7 @@ package org.tdsm.commands;
 import java.util.HashMap;
 
 import org.bukkit.entity.Player;
+import org.tdsm.MultipleHomes;
 
 public class CommandParser {
 
@@ -38,7 +39,7 @@ public class CommandParser {
         return cmd;
     }
 	
-	public boolean ParseCommand(String CommandLine, Player player) {
+	public boolean ParseCommand(String CommandLine, Player player, MultipleHomes Plugin) {
 		String sentcommands = CommandLine.trim();
 		if(sentcommands.startsWith("/")) {
 			sentcommands = sentcommands.substring(1, sentcommands.length());
@@ -56,6 +57,7 @@ public class CommandParser {
 						Command nCommand = new Command();
 						nCommand.Player = player;
 						nCommand.Arguments = Commands;
+						nCommand.Plugin = Plugin;
 						if(cmdInfo.Command.invoke(Commands.class.newInstance(), nCommand).getClass() != null) {
 							return true; //Event Processed without Failures
 						}

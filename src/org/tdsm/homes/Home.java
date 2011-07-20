@@ -1,5 +1,6 @@
 package org.tdsm.homes;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.util.config.Configuration;
 
@@ -14,6 +15,10 @@ public class Home {
 	public String Owner = "";
 	public List<String> Accessers;
 	public Configuration HostFile;
+	
+	public Home() {
+		Accessers = new ArrayList<String>();
+	}
 	
 	public String toFormattedString() {
 		String AccessersString = "";

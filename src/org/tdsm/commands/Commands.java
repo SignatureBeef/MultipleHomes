@@ -1,5 +1,7 @@
 package org.tdsm.commands;
 
+import org.tdsm.homes.HomeManager;
+
 public class Commands {
 
 	public static boolean Home(Command command) {
@@ -7,8 +9,14 @@ public class Commands {
 		return false;
 	}
 	public static boolean SetHome(Command command) {
-		
-		command.Player.sendMessage("Yet to implement, " + command.Player.getName());
+		try {
+			HomeManager.AddHome(command.Player, command.Plugin.WorldPlayerData, 
+					"Test", "test description", command.Plugin.WorldFolder, true);
+		} catch(Exception e) {
+			command.Player.sendMessage("Error running Command.");
+			System.out.println(e.getLocalizedMessage());
+			e.printStackTrace();
+		}
 		return false;
 	}
 }
