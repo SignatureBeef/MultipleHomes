@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.bukkit.World;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginManager;
@@ -21,7 +20,7 @@ public class MultipleHomes extends JavaPlugin {
 
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public static final String PluginFolder = "plugins/MultipleHomes/";
-	public final String WorldFolder = PluginFolder + "Worlds/";
+	public final String WorldFolder = PluginFolder + "WorldData/";
 	
 	/*
 	 *	HashMap Layout:
@@ -35,13 +34,23 @@ public class MultipleHomes extends JavaPlugin {
 	 * (non-Javadoc)
 	 * @see org.tdsm.MultipleHomes#worldPlayerData
 	 */
-	public HashMap<String, HashMap<String, List<Home>>> WorldPlayerData;
+	//public HashMap<String, HashMap<String, List<Home>>> WorldPlayerData; //Changed my mind
+	public HashMap<String, List<Home>> WorldPlayerData;
 	
 	
 	@Override
 	public void onDisable() {
 		// TODO Auto-generated method stub
 		WritetoConsole("Disabled.");
+	}
+	
+	@Override
+	public void onLoad() {
+		// TODO Auto-generated method stub
+		WritetoConsole("Loading...");
+		
+		SetupDirectories();
+		LoadData();
 	}
 
 	@Override
@@ -65,26 +74,40 @@ public class MultipleHomes extends JavaPlugin {
 	}
 	
 	public void SetupDirectories() {
-		File worldDir = new File(this.WorldFolder);
-		if(!worldDir.exists()) {
-			if(!worldDir.mkdir()) {
-				WritetoConsole("Issue Creating Worlds Folder (1)");
-				if(!worldDir.mkdirs()) {
-					WritetoConsole("Issue Creating Worlds Folder (2)");
+		String[] Folders = new String[] { PluginFolder, this.WorldFolder };
+		for(String folder : Folders) {
+			File worldDir = new File(folder);
+			if(!worldDir.exists()) {
+				if(!worldDir.mkdir()) {
+					WritetoConsole("Issue Creating Folder (1): " + folder);
+					if(!worldDir.mkdirs()) {
+						WritetoConsole("Issue Creating Folder (2): " + folder);
+					}
 				}
-			}
-		}
-		for(World world : this.getServer().getWorlds()) {
-			HashMap<String, List<Home>> worldData = HomeManager.LoadWorldData(WorldFolder + world.getName() + "/");
-			if(worldData != null) {
-				WorldPlayerData.put(world.getName(), worldData);
 			}
 		}
 	}
 	
 	public void LoadData() {
-		WorldPlayerData = new HashMap<String, HashMap<String, List<Home>>>();
-	
+		WorldPlayerData = new HashMap<String, List<Home>>();
+		
+		File WorldDataFolder = new File(WorldFolder);
+	    File[] PlayerHomeFileList = WorldDataFolder.listFiles();
+
+	    for (int i = 0; i < PlayerHomeFileList.length; i++) {
+	      if (PlayerHomeFileList[i].isFile()) {
+	    	  if(PlayerHomeFileList[i].getName().toLowerCase().endsWith(".mhf")) {
+	    		  String PlayerName = PlayerHomeFileList[i].getName().substring(0, 
+	    				  				PlayerHomeFileList[i].getName().length()-4).trim();
+	    		  List<Home> playerHomes = HomeManager.LoadPlayerHomes(
+	    				  					PlayerHomeFileList[i].getAbsolutePath());
+	    	  
+	    		  if(playerHomes != null) {
+	    			  WorldPlayerData.put(PlayerName, playerHomes);
+	    		  }
+	    	  }
+	      } 
+	    }
 	}
 
 }

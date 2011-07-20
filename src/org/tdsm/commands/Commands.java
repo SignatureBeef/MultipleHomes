@@ -7,6 +7,7 @@ public class Commands {
 		return false;
 	}
 	public static boolean SetHome(Command command) {
+		
 		command.Player.sendMessage("Yet to implement, " + command.Player.getName());
 		return false;
 	}
