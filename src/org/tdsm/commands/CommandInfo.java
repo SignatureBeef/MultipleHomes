@@ -2,10 +2,9 @@ package org.tdsm.commands;
 
 import java.lang.reflect.Method;
 
-@SuppressWarnings("unused")
 public class CommandInfo {
 	public String Name = "";
-	private String Descripton = "";
+	public String Descripton = "";
 	public Method Command;
 	public boolean Restricted;
 	

@@ -1,11 +1,13 @@
 package org.tdsm.commands;
 
-import java.lang.reflect.Method;
-
 public class Commands {
 
-	public static Method Home(Command command) {
-		command.Player.sendMessage("Works?");
-		return null;
+	public static boolean Home(Command command) {
+		command.Player.sendMessage("Yet to implement, " + command.Player.getName());
+		return false;
+	}
+	public static boolean SetHome(Command command) {
+		command.Player.sendMessage("Yet to implement, " + command.Player.getName());
+		return false;
 	}
 }

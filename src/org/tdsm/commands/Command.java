@@ -6,6 +6,5 @@ public class Command {
 	
 	public String[] Arguments;
 	public Player Player;
-	//public Integer Map;
 	
 }

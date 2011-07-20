@@ -11,11 +11,18 @@ public class CommandParser {
 	public CommandParser() {
 		commands = new HashMap<String, CommandInfo>();
 		
-		try {			
+		try {
+			//Home Command
 			AddCommand("home")
-				.SetDescripton("Personalized Home Teleportation")
-				.SetRestricted(false)
-				.SetCommand(Commands.class.getDeclaredMethod("Home", Command.class));
+			.SetDescripton("Personalized Home Teleportation.")
+			.SetRestricted(false)
+			.SetCommand(Commands.class.getDeclaredMethod("Home", Command.class));
+			
+			//Set Home Command
+			AddCommand("sethome")
+			.SetDescripton("Set a Personalized Home.")
+			.SetRestricted(false)
+			.SetCommand(Commands.class.getDeclaredMethod("SetHome", Command.class));
 			
 		} catch(Exception e) {
 			
@@ -44,21 +51,17 @@ public class CommandParser {
 				if(cmdInfo.Restricted) {  //&& player.hasPermission("mh." + cmdInfo.Name)) {
 					player.sendMessage("Sorry, You do not have access to this feature.");
 				} else {
-					player.sendMessage("Sorry, You do not have access to this feature.");
 					try {
+						//Invoke the Set Command =D
 						Command nCommand = new Command();
 						nCommand.Player = player;
 						nCommand.Arguments = Commands;
-						cmdInfo.Command.invoke(Commands.class.newInstance(), nCommand);
+						if(cmdInfo.Command.invoke(Commands.class.newInstance(), nCommand).getClass() != null) {
+							return true; //Event Processed without Failures
+						}
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					//switch(cmdInfo.Name) {
-					//	case "home": {
-					//		break;
-					//	}
-					//}
 				}
 			}
 		}

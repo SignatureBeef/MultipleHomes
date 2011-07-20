@@ -13,6 +13,8 @@ public class mhPlayerListener extends PlayerListener {
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		if(!plugin.isEnabled()) { return; }
 		//Que Processes
-		plugin.cmdParser.ParseCommand(event.getMessage(), event.getPlayer());
+		if(plugin.cmdParser.ParseCommand(event.getMessage(), event.getPlayer())) {
+			event.setCancelled(true);
+		}
 	}
 }
