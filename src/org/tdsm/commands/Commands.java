@@ -13,7 +13,7 @@ public class Commands {
 		try {
 			//Command Layout: /home <number:name>
 			if(command.Arguments != null && command.Arguments.length > 1) {
-				String Name = MultipleHomes.ArrayToString(command.Arguments, " ");
+				String Name = MultipleHomes.ArrayToString(command.Arguments, " ", false);
 				Name = Name.substring(Name.indexOf(command.Arguments[0]) + command.Arguments[0].length(),
 						Name.length()).trim();
 				Home home = HomeManager.GetPlayerHome(command.Player.getName(), 
@@ -77,7 +77,7 @@ public class Commands {
 					//Parse Home Name
 					if(command.Arguments[2].contains("\"")) {
 						try {
-							Name = MultipleHomes.ArrayToString(command.Arguments, " ");
+							Name = MultipleHomes.ArrayToString(command.Arguments, " ", false);
 							Name = Name.substring(Name.indexOf("\"") + 1, Name.length());
 							Name = Name.substring(0, Name.indexOf("\"")).trim();
 						} catch(Exception e) {
@@ -92,7 +92,7 @@ public class Commands {
 				if(command.Arguments[3] != null && command.Arguments[3].trim().length() > 0) {
 					//Parse Home Description
 					try {
-						Description = MultipleHomes.ArrayToString(command.Arguments, " ");
+						Description = MultipleHomes.ArrayToString(command.Arguments, " ", false);
 						Description = Description.substring(Description.indexOf(Name) + 
 								Name.length() + 1, Description.length()).trim();
 					} catch(Exception e) {
@@ -171,7 +171,7 @@ public class Commands {
 		try {
 			//Command Layout: /deletehome <number:name>
 			if(command.Arguments != null && command.Arguments.length > 1) {
-				String Name = MultipleHomes.ArrayToString(command.Arguments, " ");
+				String Name = MultipleHomes.ArrayToString(command.Arguments, " ", false);
 				Name = Name.substring(Name.indexOf(command.Arguments[0]) + command.Arguments[0].length(),
 						Name.length()).trim();
 				Home home = HomeManager.GetPlayerHome(command.Player.getName(), 
@@ -247,5 +247,110 @@ public class Commands {
 			e.printStackTrace();
 		}
 		return true;
+	}
+
+	public static boolean HomeInvite(Command command) {
+		try {
+			if(command.Arguments != null && command.Arguments.length > 2) {
+				if(command.Arguments[1] != null && command.Arguments[2] != null &&
+						command.Arguments[1].trim().length() > 0 &&
+						command.Arguments[2].trim().length() > 0) {
+					
+					String Name = MultipleHomes.ArrayToString(command.Arguments, " ", false);
+					Name = Name.substring(Name.indexOf(command.Arguments[1]) + command.Arguments[1].length(),
+							Name.length()).trim();
+					Home home = HomeManager.GetPlayerHome(command.Player.getName(), 
+							Name, command.Plugin.WorldPlayerData);
+					
+					if(home == null) {
+						int HomeNumber = 0;
+						try {
+							HomeNumber = Integer.valueOf(command.Arguments[2]);
+						} catch(Exception e) {
+							
+						}
+						home = HomeManager.GetPlayerHome(command.Player.getName(), 
+								HomeNumber, command.Plugin.WorldPlayerData);
+					}
+					
+					if(home != null) {
+						if(home.HomeNumber <= command.Plugin.properties.GetMaxHomes() &&
+								home.Accessers.add(command.Arguments[1])) {
+							if(HomeManager.SavePlayerHomes(command.Player.getName(), 
+										 command.Plugin.WorldPlayerData, null)) {
+								command.Player.sendMessage(ChatColor.DARK_GREEN + "You have allowed " + command.Arguments[1] + " to " + home.Name);
+							} else {
+								command.Player.sendMessage(ChatColor.DARK_RED + "Failed to save Home.");
+							}
+						} else {
+							command.Player.sendMessage(ChatColor.DARK_RED + "Sorry, But That Home is out of Bounds.");
+						}
+					} else {
+						command.Player.sendMessage(ChatColor.DARK_RED + "The Specified Home Name/Number '" +
+								Name + "' Cannot be Located.");
+					}
+				}
+			}
+		} catch(Exception e) {
+			command.Player.sendMessage(ChatColor.DARK_RED + "Error running Command.");
+			System.out.println(e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public static boolean HomeVisit(Command command) {
+		try {
+			if(command.Arguments != null && command.Arguments.length > 2) {
+				if(command.Arguments[1] != null && command.Arguments[2] != null &&
+						command.Arguments[1].trim().length() > 0 &&
+						command.Arguments[2].trim().length() > 0) {
+					
+					String Name = MultipleHomes.ArrayToString(command.Arguments, " ", false);
+					Name = Name.substring(Name.indexOf(command.Arguments[1]) + command.Arguments[1].length(),
+							Name.length()).trim();
+					Home home = HomeManager.GetPlayerHome(command.Arguments[1], 
+							Name, command.Plugin.WorldPlayerData);
+					
+					if(home == null) {
+						int HomeNumber = 0;
+						try {
+							HomeNumber = Integer.valueOf(command.Arguments[2]);
+						} catch(Exception e) {
+							
+						}
+						home = HomeManager.GetPlayerHome(command.Arguments[1], 
+								HomeNumber, command.Plugin.WorldPlayerData);
+					}
+					
+					if(home != null) {
+						boolean accessible = false;
+						for(String player : home.Accessers) {
+							if(player.toLowerCase().trim().equals(command.Player.getName().toLowerCase().trim())) {
+								accessible = true;
+							}
+						}
+						if(!accessible) {
+							command.Player.sendMessage(ChatColor.DARK_RED + "Sorry, But You do not have access to that Home.");
+							return false;
+						}
+						if(home.HomeNumber <= command.Plugin.properties.GetMaxHomes()) {
+							command.Player.teleport(home.Location);
+							command.Player.sendMessage(ChatColor.DARK_GREEN + "You have been Teleported to " + home.Name);
+						} else {
+							command.Player.sendMessage(ChatColor.DARK_RED + "Sorry, But That Home is out of Bounds.");
+						}
+					} else {
+						command.Player.sendMessage(ChatColor.DARK_RED + "The Specified Home Name/Number '" +
+								Name + "' Cannot be Located.");
+					}
+				}
+			}
+		} catch(Exception e) {
+			command.Player.sendMessage(ChatColor.DARK_RED + "Error running Command.");
+			System.out.println(e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

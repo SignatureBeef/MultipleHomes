@@ -3,6 +3,7 @@ package org.tdsm.homes;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.util.config.Configuration;
+import org.tdsm.MultipleHomes;
 
 public class Home {
 	 //"I don't like conflicts" - Says the lazy man
@@ -24,15 +25,19 @@ public class Home {
 	}
 	
 	public String toFormattedString() {
-		String AccessersString = "";
-		for(String player : Accessers) {
+		String AccessersString = MultipleHomes.ArrayToString(Accessers.toArray(new String[0]), Key_Accessers, true);
+		if(AccessersString == null || AccessersString.toLowerCase().equals("null")) {
+			AccessersString = "";
+		}
+		System.out.println("Home: " + AccessersString);
+		/*for(String player : Accessers) {
 			if(player.trim().length() > 0) {
 				AccessersString += Key_Accessers + player;
 			}
 		}
 		if(AccessersString.startsWith(Key_Accessers)) {
 			AccessersString = AccessersString.substring(1, AccessersString.length());
-		}
+		}*/
 		String ReT = 	//Name + Key_Seperator + For our saving method, Name isn't needed :3
 						HomeNumber + Key_Seperator +
 						(Location.getX() + Key_Location +

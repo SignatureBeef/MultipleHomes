@@ -31,7 +31,7 @@ public class CommandParser {
 			AddCommand(properties.GetSetHomeCommand())
 			.SetDescripton("Set a Personalized Home.")
 			.SetRestricted(false)
-			.SetHelpText("/" + properties.GetSetHomeCommand() + " <Number> \"<Name>\" <Description>")
+			.SetHelpText("/" + properties.GetSetHomeCommand() + " <Number> \"<Name>\" <Description> (p.s. Surround Name with \"!")
 			.SetCommand(Commands.class.getDeclaredMethod("SetHome", Command.class));
 			
 			//Delete Home Command
@@ -52,8 +52,27 @@ public class CommandParser {
 			AddCommand("multiplehomes")
 			.SetDescripton("MultipleHomes Help & Info.")
 			.SetRestricted(false)
-			.SetHelpText("/multiplehomes [<usage> <command>]")
+			.SetHelpText("/multiplehomes [usage <command>]")
 			.SetCommand(Commands.class.getDeclaredMethod("HelpAndInfo", Command.class));
+			AddCommand("mh")
+			.SetDescripton("MultipleHomes Help & Info.")
+			.SetRestricted(false)
+			.SetHelpText("/mh [usage <command>]")
+			.SetCommand(Commands.class.getDeclaredMethod("HelpAndInfo", Command.class));
+			
+			//Home Invite Command
+			AddCommand("homeinvite")
+			.SetDescripton("Allows another Player to use a home of Your own.")
+			.SetRestricted(false)
+			.SetHelpText("/homeinvite <PlayerName> <Number:Name>")
+			.SetCommand(Commands.class.getDeclaredMethod("HomeInvite", Command.class));
+			
+			//Home List Command
+			AddCommand("homevisit")
+			.SetDescripton("Allows another Player to use a home of Your own.")
+			.SetRestricted(false)
+			.SetHelpText("/homevisit <PlayerName> <Number:Name>")
+			.SetCommand(Commands.class.getDeclaredMethod("HomeVisit", Command.class));
 			
 		} catch(Exception e) {
 			

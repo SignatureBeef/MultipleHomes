@@ -23,7 +23,9 @@ public class HomeManager {
 	public static boolean SavePlayerHomes(String Player, HashMap<String, List<Home>> WorldData, Configuration config) {
 		List<String> HomeNames = new ArrayList<String>();
 		Configuration dataFile = null;
+		System.out.println(Player);
 		if(WorldData.containsKey(Player)) {
+			System.out.println(Player + "asdasd");
 			List<Home> Homes = WorldData.get(Player);
 			if(Homes.size() > 0) {
 				dataFile = Homes.get(0).HostFile;
@@ -40,7 +42,7 @@ public class HomeManager {
 			dataFile = config;
 		}
 		if(dataFile != null) {
-			dataFile.setProperty("homenames", MultipleHomes.ArrayToString(HomeNames.toArray(new String[0]), "$"));
+			dataFile.setProperty("homenames", MultipleHomes.ArrayToString(HomeNames.toArray(new String[0]), "!", false));
 			return dataFile.save();
 		}
 		return false;
@@ -60,17 +62,17 @@ public class HomeManager {
 		 */
 
 		List<Home> HomeList = new ArrayList<Home>();
-		String[] HomeNames = configuration.getString("homenames", "").split("$");
+		String[] HomeNames = configuration.getString("homenames", "").split("!");
 		
 		for(String HomeName : HomeNames) {
 			String homeString = configuration.getString(HomeName, "");
 			if(homeString != "") {
 				String[] Parts = homeString.split(Home.Key_Seperator);
-				if(Parts != null && Parts.length > 4) { //4 Parts to this, location, world etc.
+				if(Parts != null && Parts.length > 3) { //4 Parts to this, location, world etc.
 					int HomeNumber = -1;
 					Location HomeLocation = null;
 					World HomeWorld = null;
-					List<String> Accessers = new ArrayList<String>();;
+					List<String> Accessers = new ArrayList<String>();
 					String Description = "";
 
 					if(Parts[0] != null && Parts[0].trim().length() > 0) {
@@ -104,9 +106,10 @@ public class HomeManager {
 						}
 					}
 					//Get Description
-					if(Parts[3] != null && Parts[3].trim().length() > 0) {
+					if(Parts[4] != null && Parts[4].trim().length() > 0) {
 						try {
-							Description = Parts[4];
+							Description = MultipleHomes.ArrayToString(Parts, " ", false);
+							Description = Description.substring(Description.lastIndexOf(Parts[4]), Description.length());
 						} catch(Exception e) {
 							
 						}
@@ -260,8 +263,13 @@ public class HomeManager {
 	}
 	
 	public static List<Home> GetPlayerHomes(String Player, HashMap<String, List<Home>> WorldData) {
-		if(WorldData.containsKey(Player)) {
+		/*if(WorldData.containsKey(Player)) {
 			return WorldData.get(Player);
+		}*/
+		for(String player : WorldData.keySet()) {
+			if(player.toLowerCase().trim().equals(Player.toLowerCase().trim())) {
+				return WorldData.get(player);
+			}
 		}
 		return null;
 	}

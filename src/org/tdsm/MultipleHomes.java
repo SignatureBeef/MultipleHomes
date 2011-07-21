@@ -107,15 +107,20 @@ public class MultipleHomes extends JavaPlugin {
 	    	  
 	    			if(playerHomes != null) {
 	    				WorldPlayerData.put(PlayerName, playerHomes);
+	    			} else {
+	    				System.out.print("Error loading Player Data");
 	    			}
 	    		}
 	    	} 
 	    }
 	}
 	
-	public static String ArrayToString(String[] Array, String Deliminator) {
+	public static String ArrayToString(String[] Array, String Deliminator, boolean debug) {
 		StringBuilder StringBuilder = new StringBuilder();
 		for(String str : Array) {
+			if(debug) {
+				System.out.println(str);
+			}
 			StringBuilder.append(Deliminator +  str);
 		}
 		String ReT = StringBuilder.toString().trim();
