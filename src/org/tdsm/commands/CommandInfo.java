@@ -7,7 +7,6 @@ public class CommandInfo {
 	public String Descripton = "";
 	public String HelpText = "";
 	public Method Command;
-	public boolean Restricted;
 	
 	public CommandInfo SetName(String name) {
 		Name = name;
@@ -26,11 +25,6 @@ public class CommandInfo {
 	
 	public CommandInfo SetDescripton(String descripton) {
 		Descripton = descripton;
-		return this;
-	}
-	
-	public CommandInfo SetRestricted(boolean restricted) {
-		Restricted = restricted;
 		return this;
 	}
 }
