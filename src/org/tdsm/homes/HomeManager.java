@@ -77,7 +77,6 @@ public class HomeManager {
 					//Get World
 					if(Parts[2] != null && Parts[2].trim().length() > 0) {
 						try {
-							System.out.print(Parts[2]);
 							HomeWorld = server.getWorld(Parts[2]);
 							if(HomeWorld == null) {
 								System.out.println("Incorrect world name!");
@@ -187,14 +186,9 @@ public class HomeManager {
 							
 							HomeList.add(newHome);
 							System.out.println("Successfully Loaded Home: " + HomeName);
-							System.out.println(HomeLocation.getX());
-							System.out.println(HomeLocation.getY());
-							System.out.println(HomeLocation.getZ());
-							System.out.println(HomeLocation.getYaw());
-							System.out.println(HomeLocation.getPitch());
-							System.out.println(HomeLocation.getWorld().getName());
 						}
 					} else {
+						//Debug shit :3
 						System.out.println("Failed to Load Home: " + HomeName);
 						System.out.println("Due to:" );
 						String IssueName = "";
@@ -258,5 +252,36 @@ public class HomeManager {
 		if(PushDataSave) {
 			SavePlayerHomes(player.getName(), WorldPlayerData);
 		}
+	}
+	
+	public static List<Home> GetPlayerHomes(String Player, HashMap<String, List<Home>> WorldData) {
+		if(WorldData.containsKey(Player)) {
+			return WorldData.get(Player);
+		}
+		return null;
+	}
+	
+	public static Home GetPlayerHome(String PlayerName, String HomeName, HashMap<String, List<Home>> WorldData) {
+		List<Home> HomeList = GetPlayerHomes(PlayerName, WorldData);
+		if(HomeList != null) {
+			for(Home home : HomeList) {
+				if(home.Name.trim().toLowerCase().equals(HomeName.trim().toLowerCase())) {
+					return home;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static Home GetPlayerHome(String PlayerName, int HomeNumber, HashMap<String, List<Home>> WorldData) {
+		List<Home> HomeList = GetPlayerHomes(PlayerName, WorldData);
+		if(HomeList != null) {
+			for(Home home : HomeList) {
+				if(home.HomeNumber == HomeNumber) {
+					return home;
+				}
+			}
+		}
+		return null;
 	}
 }

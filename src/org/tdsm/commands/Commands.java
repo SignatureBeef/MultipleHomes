@@ -9,7 +9,41 @@ import org.tdsm.homes.*;
 public class Commands {
 
 	public static boolean Home(Command command) {
-		command.Player.sendMessage("Yet to implement, " + command.Player.getName());
+		try {
+			//Command Layout: /home <number:name>
+			if(command.Arguments != null && command.Arguments.length > 1) {
+				Home home = HomeManager.GetPlayerHome(command.Player.getName(), 
+						command.Arguments[0], command.Plugin.WorldPlayerData);
+				if(home == null) {
+					int HomeNumber = 0;
+					try {
+						HomeNumber = Integer.valueOf(command.Arguments[0]);
+					} catch(Exception e) {
+						
+					}
+					home = HomeManager.GetPlayerHome(command.Player.getName(), 
+							HomeNumber, command.Plugin.WorldPlayerData);
+				}
+				
+				if(home != null) {
+					//if(home.HomeNumber > MaxHomes) {
+						command.Player.teleport(home.Location);
+						command.Player.sendMessage("You have been Teleported to " + home.Name);
+					//}
+				} else {
+					command.Player.sendMessage("The Specified Home Name/Number '" +
+							command.Arguments[0] + "' Cannot be Located.");
+				}
+				
+			} else {
+				command.Player.sendMessage("Please Review Your Command.");
+			}
+			
+		} catch(Exception e) {
+			command.Player.sendMessage("Error running Command.");
+			System.out.println(e.getLocalizedMessage());
+			e.printStackTrace();
+		}
 		
 		command.Cancelled = true;
 		return false;
