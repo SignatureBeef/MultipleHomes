@@ -10,6 +10,7 @@ public class Home {
 	public String Key_Accessers =  ":*:";
 	
 	public String Name = "";
+	public Integer HomeNumber;
 	public org.bukkit.Location Location;
 	public String Description = "";
 	public String Owner = "";
@@ -18,6 +19,7 @@ public class Home {
 	
 	public Home() {
 		Accessers = new ArrayList<String>();
+		HomeNumber = 0;
 	}
 	
 	public String toFormattedString() {
@@ -30,7 +32,8 @@ public class Home {
 		if(AccessersString.startsWith(Key_Accessers)) {
 			AccessersString = AccessersString.substring(1, AccessersString.length());
 		}
-		String ReT = 	Name + Key_Seperator +
+		String ReT = 	//Name + Key_Seperator + For our saving method, Name isn't needed :3
+						HomeNumber + Key_Seperator +
 						(Location.getX() + ":*:" +
 						 Location.getY() + ":*:" +
 						 Location.getZ() + ":*:" +

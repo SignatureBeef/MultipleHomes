@@ -5,6 +5,12 @@ import java.util.HashMap;
 import org.bukkit.entity.Player;
 import org.tdsm.MultipleHomes;
 
+/*
+ * FUCKING CAUTION
+ * 		Delegates are bloody unsafe, Make sure you catch every bloody possible 
+ * 		error or the whole function will seize to function, It will not give a precise 
+ * 		stack trace.
+ */
 public class CommandParser {
 
 	public HashMap<String, CommandInfo> commands;
@@ -59,7 +65,7 @@ public class CommandParser {
 						nCommand.Arguments = Commands;
 						nCommand.Plugin = Plugin;
 						if(cmdInfo.Command.invoke(Commands.class.newInstance(), nCommand).getClass() != null) {
-							return true; //Event Processed without Failures
+							return nCommand.Cancelled; //Did the function process correctly?
 						}
 					} catch (Exception e) {
 						e.printStackTrace();

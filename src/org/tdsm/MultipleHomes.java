@@ -95,19 +95,30 @@ public class MultipleHomes extends JavaPlugin {
 	    File[] PlayerHomeFileList = WorldDataFolder.listFiles();
 
 	    for (int i = 0; i < PlayerHomeFileList.length; i++) {
-	      if (PlayerHomeFileList[i].isFile()) {
-	    	  if(PlayerHomeFileList[i].getName().toLowerCase().endsWith(".mhf")) {
-	    		  String PlayerName = PlayerHomeFileList[i].getName().substring(0, 
+	    	if (PlayerHomeFileList[i].isFile()) {
+	    		if(PlayerHomeFileList[i].getName().toLowerCase().endsWith(".mhf")) {
+	    			String PlayerName = PlayerHomeFileList[i].getName().substring(0, 
 	    				  				PlayerHomeFileList[i].getName().length()-4).trim();
-	    		  List<Home> playerHomes = HomeManager.LoadPlayerHomes(
-	    				  					PlayerHomeFileList[i].getAbsolutePath());
+	    			List<Home> playerHomes = HomeManager.LoadPlayerHomes(
+	    				  						PlayerHomeFileList[i].getAbsolutePath());
 	    	  
-	    		  if(playerHomes != null) {
-	    			  WorldPlayerData.put(PlayerName, playerHomes);
-	    		  }
-	    	  }
-	      } 
+	    			if(playerHomes != null) {
+	    				WorldPlayerData.put(PlayerName, playerHomes);
+	    			}
+	    		}
+	    	} 
 	    }
+	}
+	
+	public static String ArrayToString(String[] Array) {
+		StringBuilder StringBuilder = new StringBuilder();
+		for(String str : Array) {
+			StringBuilder.append(str + " ");
+		}
+		if(StringBuilder.toString().trim().length() > 0) {
+			return StringBuilder.toString().trim();
+		}
+		return null;
 	}
 
 }
