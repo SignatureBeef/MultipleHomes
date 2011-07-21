@@ -17,6 +17,7 @@ public class MultipleHomes extends JavaPlugin {
 
 	private final mhPlayerListener playerListener = new mhPlayerListener(this);
 	public CommandParser cmdParser;
+	public Properties properties;
 
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public static final String PluginFolder = "plugins/MultipleHomes/";
@@ -50,6 +51,7 @@ public class MultipleHomes extends JavaPlugin {
 		WritetoConsole("Initialzing...");
 		
 		SetupDirectories();
+		properties = new Properties(PluginFolder + "multiplehomes.properties"); //Create/Load Properties
 	}
 
 	@Override
@@ -57,10 +59,10 @@ public class MultipleHomes extends JavaPlugin {
 		// TODO Auto-generated method stub
 		LoadData(); //This uses Worlds.
 		
-		cmdParser = new CommandParser();
+		cmdParser = new CommandParser(properties);
 		
 		PluginManager pm = getServer().getPluginManager(); 
-		pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Highest, this); //Hopefully it will over rule Essentials
 		
 		WritetoConsole("Enabled.");
 	}
@@ -118,7 +120,7 @@ public class MultipleHomes extends JavaPlugin {
 		}
 		String ReT = StringBuilder.toString().trim();
 		if(ReT.length() > 0) {
-			if(ReT.startsWith(",")) {
+			if(ReT.startsWith(Deliminator)) {
 				ReT = ReT.substring(1, ReT.length());
 			}
 			return ReT.trim();

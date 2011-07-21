@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 import org.tdsm.MultipleHomes;
+import org.tdsm.Properties;
 
 /*
  * FUCKING CAUTION
@@ -15,21 +16,44 @@ public class CommandParser {
 
 	public HashMap<String, CommandInfo> commands;
 			
-	public CommandParser() {
+	public CommandParser(Properties properties) {
 		commands = new HashMap<String, CommandInfo>();
 		
 		try {
 			//Home Command
-			AddCommand("home")
+			AddCommand(properties.GetHomeCommand())
 			.SetDescripton("Personalized Home Teleportation.")
 			.SetRestricted(false)
+			.SetHelpText("/" + properties.GetHomeCommand() + " <Number:Name>")
 			.SetCommand(Commands.class.getDeclaredMethod("Home", Command.class));
-			
+
 			//Set Home Command
-			AddCommand("sethome")
+			AddCommand(properties.GetSetHomeCommand())
 			.SetDescripton("Set a Personalized Home.")
 			.SetRestricted(false)
+			.SetHelpText("/" + properties.GetSetHomeCommand() + " <Number> \"<Name>\" <Description>")
 			.SetCommand(Commands.class.getDeclaredMethod("SetHome", Command.class));
+			
+			//Delete Home Command
+			AddCommand(properties.GetDeleteHomeCommand())
+			.SetDescripton("Delete a Home Permanently.")
+			.SetRestricted(false)
+			.SetHelpText("/" + properties.GetDeleteHomeCommand() + " <Number:Name>")
+			.SetCommand(Commands.class.getDeclaredMethod("DeleteHome", Command.class));
+			
+			//Home List Command
+			AddCommand("homelist")
+			.SetDescripton("Get a List of Your Current Homes")
+			.SetRestricted(false)
+			.SetHelpText("/homelist")
+			.SetCommand(Commands.class.getDeclaredMethod("HomeList", Command.class));
+			
+			//MH's Help/Info Command
+			AddCommand("multiplehomes")
+			.SetDescripton("MultipleHomes Help & Info.")
+			.SetRestricted(false)
+			.SetHelpText("/multiplehomes [<usage> <command>]")
+			.SetCommand(Commands.class.getDeclaredMethod("HelpAndInfo", Command.class));
 			
 		} catch(Exception e) {
 			

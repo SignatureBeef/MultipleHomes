@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 public class CommandInfo {
 	public String Name = "";
 	public String Descripton = "";
+	public String HelpText = "";
 	public Method Command;
 	public boolean Restricted;
 	
@@ -15,6 +16,11 @@ public class CommandInfo {
 	
 	public CommandInfo SetCommand(Method command) {
 		Command = command;
+		return this;
+	}
+	
+	public CommandInfo SetHelpText(String helpText) {
+		HelpText = helpText;
 		return this;
 	}
 	

@@ -20,7 +20,7 @@ public class HomeManager {
 	 * 		<homename>	- Contains the data of the home
 	 */
 	
-	public static boolean SavePlayerHomes(String Player, HashMap<String, List<Home>> WorldData) {
+	public static boolean SavePlayerHomes(String Player, HashMap<String, List<Home>> WorldData, Configuration config) {
 		List<String> HomeNames = new ArrayList<String>();
 		Configuration dataFile = null;
 		if(WorldData.containsKey(Player)) {
@@ -32,11 +32,16 @@ public class HomeManager {
 					
 					dataFile.setProperty(home.Name, home.toFormattedString());
 				}
+			} else {
+				
 			}
-			if(dataFile != null) {
-				dataFile.setProperty("homenames", MultipleHomes.ArrayToString(HomeNames.toArray(new String[0]), ","));
-				return dataFile.save();
-			}
+		}
+		if(dataFile == null) {
+			dataFile = config;
+		}
+		if(dataFile != null) {
+			dataFile.setProperty("homenames", MultipleHomes.ArrayToString(HomeNames.toArray(new String[0]), "$"));
+			return dataFile.save();
 		}
 		return false;
 	}
@@ -55,7 +60,7 @@ public class HomeManager {
 		 */
 
 		List<Home> HomeList = new ArrayList<Home>();
-		String[] HomeNames = configuration.getString("homenames", "").split(",");
+		String[] HomeNames = configuration.getString("homenames", "").split("$");
 		
 		for(String HomeName : HomeNames) {
 			String homeString = configuration.getString(HomeName, "");
@@ -250,7 +255,7 @@ public class HomeManager {
 			WorldPlayerData.put(player.getName(), homeList); //Add Home list to global data list
 		}
 		if(PushDataSave) {
-			SavePlayerHomes(player.getName(), WorldPlayerData);
+			SavePlayerHomes(player.getName(), WorldPlayerData, null);
 		}
 	}
 	
