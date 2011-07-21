@@ -12,12 +12,16 @@ public class Commands {
 		try {
 			//Command Layout: /home <number:name>
 			if(command.Arguments != null && command.Arguments.length > 1) {
+				String Name = MultipleHomes.ArrayToString(command.Arguments, " ");
+				Name = Name.substring(Name.indexOf(command.Arguments[0]) + command.Arguments[0].length(),
+						Name.length()).trim();
 				Home home = HomeManager.GetPlayerHome(command.Player.getName(), 
-						command.Arguments[0], command.Plugin.WorldPlayerData);
+						Name, command.Plugin.WorldPlayerData);
+				
 				if(home == null) {
 					int HomeNumber = 0;
 					try {
-						HomeNumber = Integer.valueOf(command.Arguments[0]);
+						HomeNumber = Integer.valueOf(command.Arguments[1]);
 					} catch(Exception e) {
 						
 					}
@@ -32,7 +36,7 @@ public class Commands {
 					//}
 				} else {
 					command.Player.sendMessage("The Specified Home Name/Number '" +
-							command.Arguments[0] + "' Cannot be Located.");
+							command.Arguments[1] + "' Cannot be Located.");
 				}
 				
 			} else {

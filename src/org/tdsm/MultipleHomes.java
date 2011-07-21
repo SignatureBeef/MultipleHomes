@@ -116,8 +116,12 @@ public class MultipleHomes extends JavaPlugin {
 		for(String str : Array) {
 			StringBuilder.append(Deliminator +  str);
 		}
-		if(StringBuilder.toString().trim().length() > 0) {
-			return StringBuilder.toString().trim();
+		String ReT = StringBuilder.toString().trim();
+		if(ReT.length() > 0) {
+			if(ReT.startsWith(",")) {
+				ReT = ReT.substring(1, ReT.length());
+			}
+			return ReT.trim();
 		}
 		return null;
 	}
