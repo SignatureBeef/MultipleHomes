@@ -47,15 +47,16 @@ public class MultipleHomes extends JavaPlugin {
 	@Override
 	public void onLoad() {
 		// TODO Auto-generated method stub
-		WritetoConsole("Loading...");
+		WritetoConsole("Initialzing...");
 		
 		SetupDirectories();
-		LoadData();
 	}
 
 	@Override
 	public void onEnable() {
 		// TODO Auto-generated method stub
+		LoadData(); //This uses Worlds.
+		
 		cmdParser = new CommandParser();
 		
 		PluginManager pm = getServer().getPluginManager(); 
@@ -65,12 +66,7 @@ public class MultipleHomes extends JavaPlugin {
 	}
 	
 	public void WritetoConsole(String Msg) {
-		//System.out.println("[" + pdfFile.getName() + "] " + Msg);
-		try {
-			log.info("[MultipleHomes] " + Msg);
-		} catch (Exception e) {
-			
-		}
+		log.info("[MultipleHomes] " + Msg);
 	}
 	
 	public void SetupDirectories() {
@@ -99,8 +95,13 @@ public class MultipleHomes extends JavaPlugin {
 	    		if(PlayerHomeFileList[i].getName().toLowerCase().endsWith(".mhf")) {
 	    			String PlayerName = PlayerHomeFileList[i].getName().substring(0, 
 	    				  				PlayerHomeFileList[i].getName().length()-4).trim();
+
+	    			System.out.println("Loading: " + PlayerHomeFileList[i].getAbsolutePath());
+
 	    			List<Home> playerHomes = HomeManager.LoadPlayerHomes(
-	    				  						PlayerHomeFileList[i].getAbsolutePath());
+	    				  						PlayerHomeFileList[i].getAbsolutePath(),
+	    				  						PlayerName,
+	    				  						this.getServer());
 	    	  
 	    			if(playerHomes != null) {
 	    				WorldPlayerData.put(PlayerName, playerHomes);
@@ -110,10 +111,10 @@ public class MultipleHomes extends JavaPlugin {
 	    }
 	}
 	
-	public static String ArrayToString(String[] Array) {
+	public static String ArrayToString(String[] Array, String Deliminator) {
 		StringBuilder StringBuilder = new StringBuilder();
 		for(String str : Array) {
-			StringBuilder.append(str + " ");
+			StringBuilder.append(Deliminator +  str);
 		}
 		if(StringBuilder.toString().trim().length() > 0) {
 			return StringBuilder.toString().trim();

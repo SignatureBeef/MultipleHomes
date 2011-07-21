@@ -5,9 +5,10 @@ import java.util.List;
 import org.bukkit.util.config.Configuration;
 
 public class Home {
-	public String Key_Seperator = "&*&";
-	public String Key_Location = "&*&";
-	public String Key_Accessers =  ":*:";
+	 //"I don't like conflicts" - Says the lazy man
+	public static String Key_Seperator = "%";
+	public static String Key_Location = ":";
+	public static String Key_Accessers =  "#";
 	
 	public String Name = "";
 	public Integer HomeNumber;
@@ -34,12 +35,11 @@ public class Home {
 		}
 		String ReT = 	//Name + Key_Seperator + For our saving method, Name isn't needed :3
 						HomeNumber + Key_Seperator +
-						(Location.getX() + ":*:" +
-						 Location.getY() + ":*:" +
-						 Location.getZ() + ":*:" +
-						 Location.getYaw() + ":*:" +
-						 Location.getPitch() + ":*:" +
-						 Location.getDirection()).trim() + ":*:" +
+						(Location.getX() + Key_Location +
+						 Location.getY() + Key_Location +
+						 Location.getZ() + Key_Location +
+						 Location.getYaw() + Key_Location +
+						 Location.getPitch()).trim() + Key_Seperator +
 						 Location.getWorld().getName() + Key_Seperator + 
 						 AccessersString + Key_Seperator +
 						 Description;

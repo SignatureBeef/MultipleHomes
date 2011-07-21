@@ -36,7 +36,7 @@ public class Commands {
 					//Parse Home Name
 					if(command.Arguments[2].contains("\"")) {
 						try {
-							Name = MultipleHomes.ArrayToString(command.Arguments);
+							Name = MultipleHomes.ArrayToString(command.Arguments, " ");
 							Name = Name.substring(Name.indexOf("\"") + 1, Name.length());
 							Name = Name.substring(0, Name.indexOf("\"")).trim();
 						} catch(Exception e) {
@@ -51,7 +51,7 @@ public class Commands {
 				if(command.Arguments[3] != null && command.Arguments[3].trim().length() > 0) {
 					//Parse Home Description
 					try {
-						Description = MultipleHomes.ArrayToString(command.Arguments);
+						Description = MultipleHomes.ArrayToString(command.Arguments, " ");
 						Description = Description.substring(Description.indexOf(Name) + 
 								Name.length() + 1, Description.length()).trim();
 					} catch(Exception e) {
