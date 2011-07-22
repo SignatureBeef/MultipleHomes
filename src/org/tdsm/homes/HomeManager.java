@@ -42,7 +42,7 @@ public class HomeManager {
 			dataFile = config;
 		}
 		if(dataFile != null) {
-			dataFile.setProperty("homenames", MultipleHomes.ArrayToString(HomeNames.toArray(new String[0]), "!", false));
+			dataFile.setProperty("homenames", MultipleHomes.ArrayToString(HomeNames.toArray(new String[0]), "!"));
 			return dataFile.save();
 		}
 		return false;
@@ -108,7 +108,7 @@ public class HomeManager {
 					//Get Description
 					if(Parts[4] != null && Parts[4].trim().length() > 0) {
 						try {
-							Description = MultipleHomes.ArrayToString(Parts, " ", false);
+							Description = MultipleHomes.ArrayToString(Parts, " ");
 							Description = Description.substring(Description.lastIndexOf(Parts[4]), Description.length());
 						} catch(Exception e) {
 							

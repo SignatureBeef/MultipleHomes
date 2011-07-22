@@ -115,12 +115,9 @@ public class MultipleHomes extends JavaPlugin {
 	    }
 	}
 	
-	public static String ArrayToString(String[] Array, String Deliminator, boolean debug) {
+	public static String ArrayToString(String[] Array, String Deliminator) {
 		StringBuilder StringBuilder = new StringBuilder();
 		for(String str : Array) {
-			if(debug) {
-				System.out.println(str);
-			}
 			StringBuilder.append(Deliminator +  str);
 		}
 		String ReT = StringBuilder.toString().trim();

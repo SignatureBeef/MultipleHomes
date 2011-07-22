@@ -25,21 +25,11 @@ public class Home {
 	}
 	
 	public String toFormattedString() {
-		String AccessersString = MultipleHomes.ArrayToString(Accessers.toArray(new String[0]), Key_Accessers, true);
+		String AccessersString = MultipleHomes.ArrayToString(Accessers.toArray(new String[0]), Key_Accessers);
 		if(AccessersString == null || AccessersString.toLowerCase().equals("null")) {
 			AccessersString = "";
 		}
-		System.out.println("Home: " + AccessersString);
-		/*for(String player : Accessers) {
-			if(player.trim().length() > 0) {
-				AccessersString += Key_Accessers + player;
-			}
-		}
-		if(AccessersString.startsWith(Key_Accessers)) {
-			AccessersString = AccessersString.substring(1, AccessersString.length());
-		}*/
-		String ReT = 	//Name + Key_Seperator + For our saving method, Name isn't needed :3
-						HomeNumber + Key_Seperator +
+		String ReT = 	HomeNumber + Key_Seperator +
 						(Location.getX() + Key_Location +
 						 Location.getY() + Key_Location +
 						 Location.getZ() + Key_Location +

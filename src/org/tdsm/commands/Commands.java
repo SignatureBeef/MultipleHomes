@@ -13,7 +13,7 @@ public class Commands {
 		try {
 			//Command Layout: /home <number:name>
 			if(command.Arguments != null && command.Arguments.length > 1) {
-				String Name = MultipleHomes.ArrayToString(command.Arguments, " ", false);
+				String Name = MultipleHomes.ArrayToString(command.Arguments, " ");
 				Name = Name.substring(Name.indexOf(command.Arguments[0]) + command.Arguments[0].length(),
 						Name.length()).trim();
 				Home home = HomeManager.GetPlayerHome(command.Player.getName(), 
@@ -77,7 +77,7 @@ public class Commands {
 					//Parse Home Name
 					if(command.Arguments[2].contains("\"")) {
 						try {
-							Name = MultipleHomes.ArrayToString(command.Arguments, " ", false);
+							Name = MultipleHomes.ArrayToString(command.Arguments, " ");
 							Name = Name.substring(Name.indexOf("\"") + 1, Name.length());
 							Name = Name.substring(0, Name.indexOf("\"")).trim();
 						} catch(Exception e) {
@@ -92,7 +92,7 @@ public class Commands {
 				if(command.Arguments[3] != null && command.Arguments[3].trim().length() > 0) {
 					//Parse Home Description
 					try {
-						Description = MultipleHomes.ArrayToString(command.Arguments, " ", false);
+						Description = MultipleHomes.ArrayToString(command.Arguments, " ");
 						Description = Description.substring(Description.indexOf(Name) + 
 								Name.length() + 1, Description.length()).trim();
 					} catch(Exception e) {
@@ -171,7 +171,7 @@ public class Commands {
 		try {
 			//Command Layout: /deletehome <number:name>
 			if(command.Arguments != null && command.Arguments.length > 1) {
-				String Name = MultipleHomes.ArrayToString(command.Arguments, " ", false);
+				String Name = MultipleHomes.ArrayToString(command.Arguments, " ");
 				Name = Name.substring(Name.indexOf(command.Arguments[0]) + command.Arguments[0].length(),
 						Name.length()).trim();
 				Home home = HomeManager.GetPlayerHome(command.Player.getName(), 
@@ -256,7 +256,7 @@ public class Commands {
 						command.Arguments[1].trim().length() > 0 &&
 						command.Arguments[2].trim().length() > 0) {
 					
-					String Name = MultipleHomes.ArrayToString(command.Arguments, " ", false);
+					String Name = MultipleHomes.ArrayToString(command.Arguments, " ");
 					Name = Name.substring(Name.indexOf(command.Arguments[1]) + command.Arguments[1].length(),
 							Name.length()).trim();
 					Home home = HomeManager.GetPlayerHome(command.Player.getName(), 
@@ -306,7 +306,7 @@ public class Commands {
 						command.Arguments[1].trim().length() > 0 &&
 						command.Arguments[2].trim().length() > 0) {
 					
-					String Name = MultipleHomes.ArrayToString(command.Arguments, " ", false);
+					String Name = MultipleHomes.ArrayToString(command.Arguments, " ");
 					Name = Name.substring(Name.indexOf(command.Arguments[1]) + command.Arguments[1].length(),
 							Name.length()).trim();
 					Home home = HomeManager.GetPlayerHome(command.Arguments[1], 
