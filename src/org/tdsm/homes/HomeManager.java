@@ -25,7 +25,6 @@ public class HomeManager {
 		Configuration dataFile = null;
 		System.out.println(Player);
 		if(WorldData.containsKey(Player)) {
-			System.out.println(Player + "asdasd");
 			List<Home> Homes = WorldData.get(Player);
 			if(Homes.size() > 0) {
 				dataFile = Homes.get(0).HostFile;

@@ -23,22 +23,8 @@ public class MultipleHomes extends JavaPlugin {
 	public static final String PluginFolder = "plugins/MultipleHomes/";
 	public final String WorldFolder = PluginFolder + "WorldData/";
 	
-	/*
-	 *	HashMap Layout:
-	 *		 	- 						String [End]
-	 *		< 							HashMap<String, HashMap<String, List<Home>>>
-	 *		  \		- 					String [End]
-	 *		 	<						HashMap<String, List<Home>>
-	 *			  \
-	 *				< 					List of Home [End]
-	 * 
-	 * (non-Javadoc)
-	 * @see org.tdsm.MultipleHomes#worldPlayerData
-	 */
-	//public HashMap<String, HashMap<String, List<Home>>> WorldPlayerData; //Changed my mind
 	public HashMap<String, List<Home>> WorldPlayerData;
-	
-	
+		
 	@Override
 	public void onDisable() {
 		// TODO Auto-generated method stub
