@@ -63,6 +63,7 @@ public class MultipleHomes extends JavaPlugin {
 		
 		PluginManager pm = getServer().getPluginManager(); 
 		pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Highest, this); //Hopefully it will over rule Essentials
+		pm.registerEvent(Event.Type.PLAYER_RESPAWN, playerListener, Priority.Normal, this); //Hopefully it will over rule Essentials
 		
 		WritetoConsole("Enabled.");
 	}
