@@ -12,6 +12,7 @@ public class Properties {
 	public static String SETHOME_COMMAND = "setcommand";
 	public static String DELETEHOME_COMMAND = "deletecommand";
 	public static String MAX_HOMES = "maxhomes";
+	public static String HOME_ONDEATH = "true";
 	
 	public Properties(String FilePath) {
 		config = new Configuration(new File(FilePath));
@@ -23,6 +24,7 @@ public class Properties {
 		config.setProperty(SETHOME_COMMAND, GetSetHomeCommand());
 		config.setProperty(DELETEHOME_COMMAND, GetDeleteHomeCommand());
 		config.setProperty(MAX_HOMES, GetMaxHomes());
+		config.setProperty(HOME_ONDEATH, GetHomeOnDeath());
 		config.save();
 	}
 	
@@ -40,5 +42,9 @@ public class Properties {
 	
 	public Integer GetMaxHomes() {
 		return config.getInt(MAX_HOMES, 15);
+	}
+	
+	public Boolean GetHomeOnDeath() {
+		return config.getBoolean(HOME_ONDEATH, true);
 	}
 }

@@ -63,12 +63,18 @@ public class CommandParser {
 			.SetDescripton("Allows another Player to use a home of Your own.")
 			.SetHelpText("/homeinvite <PlayerName> <Number:Name>")
 			.SetCommand(Commands.class.getDeclaredMethod("HomeInvite", Command.class));
-			
+
 			//Home List Command
 			AddCommand("homevisit")
 			.SetDescripton("Allows another Player to use a home of Your own.")
 			.SetHelpText("/homevisit <PlayerName> <Number:Name>")
 			.SetCommand(Commands.class.getDeclaredMethod("HomeVisit", Command.class));
+			
+			//Death Home Command
+			AddCommand("deathhome")
+			.SetDescripton("If allowed, You could be teleported to a home after respawning.")
+			.SetHelpText("/deathhome <Number:Name>")
+			.SetCommand(Commands.class.getDeclaredMethod("DeathHome", Command.class));
 			
 		} catch(Exception e) {
 			

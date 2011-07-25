@@ -353,4 +353,45 @@ public class Commands {
 		}
 		return false;
 	}
+
+	public static boolean DeathHome(Command command) {
+		try {
+			if(command.Arguments != null && command.Arguments.length > 0 &&
+					command.Arguments[1].trim().length() > 1) {
+				String Name = MultipleHomes.ArrayToString(command.Arguments, " ");
+				Name = Name.substring(Name.indexOf(command.Arguments[1].trim()) + command.Arguments[1].trim().length(),
+						Name.length()).trim();
+				Home home = HomeManager.GetPlayerHome(command.Player.getName(), 
+						Name, command.Plugin.WorldPlayerData);
+				
+				if(home == null) {
+					int HomeNumber = 0;
+					try {
+						HomeNumber = Integer.valueOf(command.Arguments[1].trim());
+					} catch(Exception e) {
+						
+					}
+					home = HomeManager.GetPlayerHome(command.Player.getName(), 
+							HomeNumber, command.Plugin.WorldPlayerData);
+				}
+				
+				if(home != null) {
+					home.HostFile.setProperty("deathhome", home.HomeNumber);
+					if(home.HostFile.save()) {
+						command.Player.sendMessage(ChatColor.DARK_GREEN + "Your Death Home is now set to use " + home.Name);
+					} else {
+						command.Player.sendMessage(ChatColor.DARK_RED + "There was an issue saving the home data!");
+					}
+				} else {
+					command.Player.sendMessage(ChatColor.DARK_RED + "The Specified Home Name/Number '" +
+							command.Arguments[1].trim() + "' Cannot be Located.");
+				}
+			}
+		} catch(Exception e) {
+			command.Player.sendMessage(ChatColor.DARK_RED + "Error running Command.");
+			System.out.println(e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+		return false;
+	}
 }
