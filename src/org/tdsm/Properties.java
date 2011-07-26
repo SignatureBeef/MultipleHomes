@@ -12,7 +12,8 @@ public class Properties {
 	public static String SETHOME_COMMAND = "setcommand";
 	public static String DELETEHOME_COMMAND = "deletecommand";
 	public static String MAX_HOMES = "maxhomes";
-	public static String HOME_ONDEATH = "true";
+	public static String HOME_ONDEATH = "deathhomes";
+	public static String CONVERTER_OVERWRITE = "converter_overwriteoldwithnewhomes";
 	
 	public Properties(String FilePath) {
 		config = new Configuration(new File(FilePath));
@@ -25,6 +26,7 @@ public class Properties {
 		config.setProperty(DELETEHOME_COMMAND, GetDeleteHomeCommand());
 		config.setProperty(MAX_HOMES, GetMaxHomes());
 		config.setProperty(HOME_ONDEATH, GetHomeOnDeath());
+		config.setProperty(CONVERTER_OVERWRITE, GetConverterOverwrite());
 		config.save();
 	}
 	
@@ -46,5 +48,9 @@ public class Properties {
 	
 	public Boolean GetHomeOnDeath() {
 		return config.getBoolean(HOME_ONDEATH, true);
+	}
+	
+	public Boolean GetConverterOverwrite() {
+		return config.getBoolean(CONVERTER_OVERWRITE, true);
 	}
 }

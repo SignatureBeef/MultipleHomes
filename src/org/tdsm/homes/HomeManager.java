@@ -23,13 +23,14 @@ public class HomeManager {
 	public static boolean SavePlayerHomes(String Player, HashMap<String, List<Home>> WorldData, Configuration config) {
 		List<String> HomeNames = new ArrayList<String>();
 		Configuration dataFile = null;
-		System.out.println(Player);
 		if(WorldData.containsKey(Player)) {
 			List<Home> Homes = WorldData.get(Player);
 			if(Homes.size() > 0) {
 				dataFile = Homes.get(0).HostFile;
 				for(Home home : Homes) {
-					HomeNames.add(home.Name);
+					if(!HomeNames.contains(home.Name)) {
+						HomeNames.add(home.Name);
+					}
 					
 					dataFile.setProperty(home.Name, home.toFormattedString());
 				}
@@ -192,7 +193,7 @@ public class HomeManager {
 							newHome.HostFile = configuration;
 							
 							HomeList.add(newHome);
-							System.out.println("Successfully Loaded Home: " + HomeName);
+							//System.out.println("Successfully Loaded Home: " + HomeName);
 						}
 					} else {
 						//Debug shit :3

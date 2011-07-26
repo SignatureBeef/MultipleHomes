@@ -18,7 +18,7 @@ import org.tdsm.homes.Home;
 public class Imports {
 	
 	public static HashMap<String, List<Home>> ImportHomes(MultipleHomes plugin) {
-		File oldHomes = new File(plugin.WorldFolder + "Homes");
+		File oldHomes = new File(MultipleHomes.PluginFolder + "Homes");
 		
 		HashMap<String, List<Home>> ImportList = new HashMap<String, List<Home>>();
 		
@@ -29,13 +29,18 @@ public class Imports {
 				if (userFiles[i].isFile()) {
 					String fileName = userFiles[i].getName().toLowerCase();
 					if(fileName.endsWith(".txt") && fileName.startsWith("home_")) {
+						System.out.println("Parsing: " + userFiles[i].getAbsolutePath());
 						try {
 							int HomeNumber = Integer.parseInt(fileName.substring(5, fileName.length() - 4));
+							
 							/*
 							 * #Saves Users as:
 							 * #   ~user:home:world
-							 * ~user:233.793188459839_73.0_-646.0981164787086_5.7003813_46.94997_Official-Main
+							 * ~user:X.Y_Z_Yaw_Pitch_World
+							 * 
+							 * Shitty old format, i know :3
 							 */
+							
 							FileInputStream FileStream = new FileInputStream(userFiles[i].getAbsolutePath());
 						    DataInputStream DataInput = new DataInputStream(FileStream);
 						    BufferedReader BuffReader = new BufferedReader(new InputStreamReader(DataInput));
@@ -43,16 +48,16 @@ public class Imports {
 						    String RLine = "";
 						    while ((RLine = BuffReader.readLine()) != null)   {
 						    	if (RLine.startsWith("~")) {
+						    		
 									String[] split = RLine.split(":");
-									
 									if (split.length == 2) {
 										String[] values = split[1].split("_");
-										//
 			
 										try {
 											Home home = new Home();
 											home.Owner = split[0].substring(1).trim();
 											//Parse Data
+									    	//World HomeWorld = plugin.getServer().createWorld(values[5].trim(), Environment.NORMAL);
 											World HomeWorld = plugin.getServer().getWorld(values[5].trim());
 											if(HomeWorld != null) {
 												home.Location = new Location(HomeWorld, 
@@ -71,17 +76,20 @@ public class Imports {
 													ImportList.get(home.Owner).add(home);
 												} else {
 													List<Home> homes = new ArrayList<Home>();
-													homes.add(home);
-													ImportList.put(home.Owner, homes);
+													if(homes.add(home)) {
+														ImportList.put(home.Owner, homes);
+													}
 												}
+											} else {
+										    	System.out.println("No world '" + values[5].trim() + "' has been found");
 											}
 											
 										} catch (Exception e) {
+											System.out.println("Exception importing data: " + e.getMessage());
+											e.printStackTrace();
 										}
 									}
 								}
-
-						    	RLine = BuffReader.readLine();
 						    }
 						    BuffReader.close();
 						    DataInput.close();

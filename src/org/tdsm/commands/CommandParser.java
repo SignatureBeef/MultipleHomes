@@ -13,7 +13,8 @@ import org.tdsm.Properties;
  * 		stack trace.
  * 
  * 	I probably should thank a great programmer i know, UndeadMiner, Whom I work with on a project
- * 	called TDSM, Which is a Terraria Server that runs on Windows & Mono.
+ * 	called TDSM, Which is a Terraria Server that runs on Windows & Mono with a shit tonne of 
+ *  performance over the standard server.
  *  He originally coded the "AddCommand" method, I just implemented into Java and such.
  */
 public class CommandParser {

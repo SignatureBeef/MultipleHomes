@@ -1,5 +1,6 @@
 package org.tdsm;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
@@ -11,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.tdsm.commands.CommandParser;
 import org.tdsm.homes.Home;
 import org.tdsm.homes.HomeManager;
+import org.tdsm.homes.imports.Imports;
 
 
 public class MultipleHomes extends JavaPlugin {
@@ -38,12 +40,79 @@ public class MultipleHomes extends JavaPlugin {
 		
 		SetupDirectories();
 		properties = new Properties(PluginFolder + "multiplehomes.properties"); //Create/Load Properties
+		
 	}
 
 	@Override
 	public void onEnable() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub		
 		LoadData(); //This uses Worlds.
+		
+		System.out.println("Loaded " + String.valueOf(WorldPlayerData.size()) + " Home(s)");
+		
+		HashMap<String, List<Home>> MergeData = new HashMap<String, List<Home>>();
+		
+		boolean Merge = false;
+		File oldHomes = new File(PluginFolder + "Homes");
+		if(oldHomes.exists() && oldHomes.isDirectory()) {
+			WritetoConsole("Old Home Directory Found...Attempting Convert.");
+			HashMap<String, List<Home>> Lists = Imports.ImportHomes(this);
+			if(Lists != null) {
+				for(String playerName : Lists.keySet()) {
+					if(WorldPlayerData.containsKey(playerName)) {
+						for(String RealPlayer : WorldPlayerData.keySet()) {
+							for(Home importedHome : Lists.get(playerName)) {
+								for(Home home : WorldPlayerData.get(RealPlayer)) {
+									Home toSaveHome = importedHome;
+									if((home.HomeNumber == importedHome.HomeNumber ||
+											home.Name == importedHome.Name) && properties.GetConverterOverwrite()) {
+										toSaveHome = home;
+									}
+									if(MergeData.containsKey(RealPlayer)) {
+										MergeData.get(RealPlayer).add(toSaveHome);
+									} else {
+										List<Home> homes = new ArrayList<Home>();
+										homes.add(toSaveHome);
+										MergeData.put(RealPlayer, homes);
+									}
+								}
+							}
+						}
+					} else {
+						MergeData.put(playerName, Lists.get(playerName));
+					}
+				}
+				WritetoConsole("Convert Was Successful, Saving Data.");
+				Merge = true;
+			} else {
+				WritetoConsole("Convert Was UnSuccessful.");
+			}
+		}
+
+		if(Merge) {
+			boolean delete = true;
+			this.WorldPlayerData = MergeData;
+			for(String playerName : MergeData.keySet()) {
+				if(!HomeManager.SavePlayerHomes(playerName, WorldPlayerData, null)) {
+					WritetoConsole("Failed to save " + playerName +"'s New Data File");
+					delete = false;
+				}
+			}
+			if(delete) {
+				try {
+					//DeleteDirectoryAndContents(oldHomes);
+					int i = 0;
+					File renamed = new File(oldHomes.getAbsoluteFile() + "_" + String.valueOf(i));
+					while(renamed.exists()) {
+						i++;
+						renamed = new File(oldHomes.getAbsoluteFile() + "_" + String.valueOf(i));
+					}
+					oldHomes.renameTo(renamed);
+				} catch(Exception e) {
+					
+				}
+			}
+		}
 		
 		cmdParser = new CommandParser(properties);
 		
@@ -85,7 +154,7 @@ public class MultipleHomes extends JavaPlugin {
 	    			String PlayerName = PlayerHomeFileList[i].getName().substring(0, 
 	    				  				PlayerHomeFileList[i].getName().length()-4).trim();
 
-	    			System.out.println("Loading: " + PlayerHomeFileList[i].getAbsolutePath());
+	    			//System.out.println("Loading: " + PlayerHomeFileList[i].getAbsolutePath());
 
 	    			List<Home> playerHomes = HomeManager.LoadPlayerHomes(
 	    				  						PlayerHomeFileList[i].getAbsolutePath(),
@@ -116,5 +185,19 @@ public class MultipleHomes extends JavaPlugin {
 		}
 		return null;
 	}
+	
+	//public static void DeleteDirectoryAndContents(File Directory) {
+	//	if(Directory.exists()) {
+	//		File[] fileList = Directory.listFiles();
+	//		for(int i = 0; i < fileList; i++) {
+	//			if(fileList[i].isDirectory()) {
+	//				DeleteDirectoryAndContents(fileList[i]);
+	//			}
+	//			else {
+	//				fileList[i].delete();
+	//			}
+	//		}
+	//	}
+	//}
 
 }
