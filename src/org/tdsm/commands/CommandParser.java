@@ -1,6 +1,8 @@
 package org.tdsm.commands;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import org.bukkit.entity.Player;
 import org.tdsm.MultipleHomes;
@@ -19,10 +21,12 @@ import org.tdsm.Properties;
  */
 public class CommandParser {
 
-	public HashMap<String, CommandInfo> commands;
+	public static HashMap<String, CommandInfo> commands;
+	public static Queue<Command> EventQueue;
 			
 	public CommandParser(Properties properties) {
 		commands = new HashMap<String, CommandInfo>();
+		EventQueue = new LinkedList<Command>();
 		
 		try {
 			//Home Command
@@ -105,14 +109,14 @@ public class CommandParser {
 					player.sendMessage("Sorry, You do not have access to this feature.");
 				} else {
 					try {
-						//Invoke the Set Command =D
 						Command nCommand = new Command();
 						nCommand.Player = player;
 						nCommand.Arguments = Commands;
 						nCommand.Plugin = Plugin;
-						if(cmdInfo.Command.invoke(Commands.class.newInstance(), nCommand).getClass() != null) {
-							return nCommand.Cancelled; //Did the function process correctly?
-						}
+						
+						EventQueue.add(nCommand);
+						//Invoke the Set Command =D
+						return true;
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

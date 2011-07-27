@@ -1,5 +1,6 @@
 package org.tdsm;
 import java.io.File;
+import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,12 +21,16 @@ public class MultipleHomes extends JavaPlugin {
 	private final mhPlayerListener playerListener = new mhPlayerListener(this);
 	public CommandParser cmdParser;
 	public Properties properties;
+	public QueueT QueueThread;
+	
+	public int TPDelay = 0;
 
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public static final String PluginFolder = "plugins/MultipleHomes/";
 	public final String WorldFolder = PluginFolder + "WorldData/";
-	
+
 	public HashMap<String, List<Home>> WorldPlayerData;
+	public HashMap<String, Timestamp> WorldPlayerDelay;
 		
 	@Override
 	public void onDisable() {
@@ -49,6 +54,11 @@ public class MultipleHomes extends JavaPlugin {
 		LoadData(); //This uses Worlds.
 		
 		System.out.println("Loaded " + String.valueOf(WorldPlayerData.size()) + " Home(s)");
+		
+		TPDelay = properties.GetTeleportDelay();
+		if(TPDelay > 0) {
+			System.out.println("Running with Teleport Delay: " + String.valueOf(TPDelay));
+		}
 		
 		HashMap<String, List<Home>> MergeData = new HashMap<String, List<Home>>();
 		
@@ -121,6 +131,8 @@ public class MultipleHomes extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_RESPAWN, playerListener, Priority.Normal, this); //Hopefully it will over rule Essentials
 		
 		WritetoConsole("Enabled.");
+		
+		QueueThread = new QueueT(this);
 	}
 	
 	public void WritetoConsole(String Msg) {

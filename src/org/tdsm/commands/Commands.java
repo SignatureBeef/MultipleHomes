@@ -32,6 +32,12 @@ public class Commands {
 				
 				if(home != null) {
 					if(home.HomeNumber <= command.Plugin.properties.GetMaxHomes()) {
+						
+						if(command.Plugin.TPDelay > 0) {
+							command.Player.sendMessage(ChatColor.DARK_GREEN + "Waiting " + String.valueOf(command.Plugin.TPDelay) + " Second(s)");
+							Thread.sleep(command.Plugin.TPDelay * 1000);
+						}
+						
 						command.Player.teleport(home.Location);
 						command.Player.sendMessage(ChatColor.DARK_GREEN + "You have been Teleported to " + home.Name);
 					} else {
@@ -226,17 +232,17 @@ public class Commands {
 		try {
 			if(command.Arguments.length > 2 && command.Arguments[1] != null && command.Arguments[2] != null &&
 				command.Arguments[1].trim().length() > 0 && command.Arguments[2].trim().length() > 0 &&
-				command.Plugin.cmdParser.commands.containsKey(command.Arguments[2].trim().toLowerCase()) &&
+				CommandParser.commands.containsKey(command.Arguments[2].trim().toLowerCase()) &&
 				command.Arguments[1].trim().equals("usage")) {
 				
 				//Wow that was long
 				command.Player.sendMessage(ChatColor.DARK_PURPLE + "Command Usage:");
-				command.Player.sendMessage(ChatColor.DARK_PURPLE + "   " + command.Plugin.cmdParser.commands.get(
+				command.Player.sendMessage(ChatColor.DARK_PURPLE + "   " + CommandParser.commands.get(
 																			command.Arguments[2].trim().toLowerCase())
 																			.HelpText);
 			} else {
 				command.Player.sendMessage(ChatColor.DARK_PURPLE + "MultipleHomes b" + command.Plugin.getDescription().getVersion());
-				for(CommandInfo cmdInfo : command.Plugin.cmdParser.commands.values()) {
+				for(CommandInfo cmdInfo : CommandParser.commands.values()) {
 					command.Player.sendMessage(ChatColor.DARK_PURPLE + "  /" + cmdInfo.Name + " - " + cmdInfo.Descripton);
 				}
 			}

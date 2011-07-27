@@ -14,9 +14,11 @@ public class Properties {
 	public static String MAX_HOMES = "maxhomes";
 	public static String HOME_ONDEATH = "deathhomes";
 	public static String CONVERTER_OVERWRITE = "converter_overwriteoldwithnewhomes";
+	public static String TELEPORT_DELAY = "teleportdelay";
 	
 	public Properties(String FilePath) {
 		config = new Configuration(new File(FilePath));
+		config.load();
 		PushData();
 	}
 	
@@ -27,6 +29,7 @@ public class Properties {
 		config.setProperty(MAX_HOMES, GetMaxHomes());
 		config.setProperty(HOME_ONDEATH, GetHomeOnDeath());
 		config.setProperty(CONVERTER_OVERWRITE, GetConverterOverwrite());
+		config.setProperty(TELEPORT_DELAY, GetTeleportDelay());
 		config.save();
 	}
 	
@@ -52,5 +55,9 @@ public class Properties {
 	
 	public Boolean GetConverterOverwrite() {
 		return config.getBoolean(CONVERTER_OVERWRITE, true);
+	}
+	
+	public Integer GetTeleportDelay() {
+		return config.getInt(TELEPORT_DELAY, 0);
 	}
 }

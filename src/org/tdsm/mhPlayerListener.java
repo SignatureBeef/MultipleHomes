@@ -10,7 +10,7 @@ import org.tdsm.homes.Home;
 import org.tdsm.homes.HomeManager;
 
 public class mhPlayerListener extends PlayerListener {
-	private static MultipleHomes plugin;
+	private MultipleHomes plugin;
 	
 	public mhPlayerListener(MultipleHomes instance) {
 		plugin = instance;
@@ -18,7 +18,6 @@ public class mhPlayerListener extends PlayerListener {
 		
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		if(!plugin.isEnabled()) { return; }
-		//Que Processes [TODO]
 		if(plugin.cmdParser.ParseCommand(event.getMessage(), event.getPlayer(), plugin)) {
 			event.setCancelled(true);
 		}
