@@ -400,4 +400,65 @@ public class Commands {
 		}
 		return false;
 	}
+	
+	public static boolean RemoveVisitor(Command command) {
+		try {
+			if(command.Arguments != null && command.Arguments.length > 2) {
+				if(command.Arguments[1] != null && command.Arguments[2] != null &&
+						command.Arguments[1].trim().length() > 0 &&
+						command.Arguments[2].trim().length() > 0) {
+					
+					String Name = MultipleHomes.ArrayToString(command.Arguments, " ");
+					Name = Name.substring(Name.indexOf(command.Arguments[1]) + command.Arguments[1].length(),
+							Name.length()).trim();
+					Home home = HomeManager.GetPlayerHome(command.Arguments[1], 
+							Name, command.Plugin.WorldPlayerData);
+					
+					if(home == null) {
+						int HomeNumber = 0;
+						try {
+							HomeNumber = Integer.valueOf(command.Arguments[2]);
+						} catch(Exception e) {
+							
+						}
+						home = HomeManager.GetPlayerHome(command.Player.getName(), 
+								HomeNumber, command.Plugin.WorldPlayerData);
+					}
+					
+					if(home != null) {
+						if(home.HomeNumber <= command.Plugin.properties.GetMaxHomes()) {
+							if(home.Accessers.contains(command.Arguments[1])) {
+								if(home.Accessers.remove(command.Arguments[1])) {
+									if(HomeManager.SavePlayerHomes(command.Player.getName(), 
+											 command.Plugin.WorldPlayerData, null)) {
+										command.Player.sendMessage(ChatColor.DARK_GREEN + "You have removed " + command.Arguments[1] + " from " + home.Name);
+									} else {
+										command.Player.sendMessage(ChatColor.DARK_RED + "Failed to save Home.");
+									}
+								} else {
+									command.Player.sendMessage(ChatColor.DARK_RED + "Failed to remove Visitor :c");
+								}						
+							} else {
+								command.Player.sendMessage(ChatColor.DARK_RED + "That Visitor Does not exist!");
+							}
+							
+							
+							
+							
+						} else {
+							command.Player.sendMessage(ChatColor.DARK_RED + "Sorry, But That Home is out of Bounds.");
+						}
+					} else {
+						command.Player.sendMessage(ChatColor.DARK_RED + "The Specified Home Name/Number '" +
+								Name + "' Cannot be Located.");
+					}
+				}
+			}
+		} catch(Exception e) {
+			command.Player.sendMessage(ChatColor.DARK_RED + "Error running Command.");
+			System.out.println(e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

@@ -81,6 +81,12 @@ public class CommandParser {
 			.SetHelpText("/deathhome <Number:Name>")
 			.SetCommand(Commands.class.getDeclaredMethod("DeathHome", Command.class));
 			
+			//Removed Visitor Command
+			AddCommand("removevisitor")
+			.SetDescripton("Removes a Visitor from a specifed Home.")
+			.SetHelpText("/removevisitor <PlayerName> <Number:Name>")
+			.SetCommand(Commands.class.getDeclaredMethod("RemoveVisitor", Command.class));
+			
 		} catch(Exception e) {
 			
 		}

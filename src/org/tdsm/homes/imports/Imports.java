@@ -31,7 +31,7 @@ public class Imports {
 					if(fileName.endsWith(".txt") && fileName.startsWith("home_")) {
 						System.out.println("Parsing: " + userFiles[i].getAbsolutePath());
 						try {
-							int HomeNumber = Integer.parseInt(fileName.substring(5, fileName.length() - 4));
+							int HomeNumber = Integer.parseInt(fileName.substring(5, fileName.length() - 4)) + 1; //+1 for new command format
 							
 							/*
 							 * #Saves Users as:
